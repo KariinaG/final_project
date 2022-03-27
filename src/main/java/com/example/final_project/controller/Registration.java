@@ -1,6 +1,8 @@
 package com.example.final_project.controller;
 
+import com.example.final_project.entity.Competition;
 import com.example.final_project.entity.Dog;
+import com.example.final_project.thymeleaf.services.CompetitionServiceImpl;
 import com.example.final_project.thymeleaf.services.DogServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,13 +31,38 @@ public class Registration {
     }
 
     @PostMapping("/dogs")
-    public Dog getDogs(@RequestBody Dog dog){
+    public Dog getDogs(@RequestBody Dog dog) {
         return dogServiceImpl.saveDog(dog);
     }
 
     @DeleteMapping("/dogs/{id}")
-    public void getDogs(@PathVariable Long id){
+    public void getDogs(@PathVariable Long id) {
         dogServiceImpl.deleteDog(id);
+    }
+
+
+    @Autowired
+    private CompetitionServiceImpl competitionServiceImpl;
+
+    @GetMapping("/competitions")
+    public List<Competition> getCompetitions() {
+        return competitionServiceImpl.getAllCompetition();
+    }
+
+    @PostMapping("/competitions")
+    public Competition getCompetitions(@RequestBody Competition competition) {
+        return competitionServiceImpl.saveCompetition(competition);
+    }
+
+    @DeleteMapping("/competitions/{id}")
+    public void getCompetitions(@PathVariable Long id) {
+        competitionServiceImpl.deleteCompetition(id);
+    }
+    @GetMapping("/competitions/{id}")
+    public ResponseEntity<Competition> getCompetition(@PathVariable Long id) {
+        Competition competition = competitionServiceImpl.getCompetitionById(id);
+
+        return new ResponseEntity(competition, HttpStatus.OK);
     }
 }
 
